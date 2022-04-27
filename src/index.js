@@ -18,8 +18,16 @@ const GlobalStyle = createGlobalStyle`
 	font-family: 'Nunito Sans', sans-serif;
   }
 
-  .title{
+  h1,h2,h3,p{
+    color:hsl(200, 15%, 8%);
+  }
+
+  h1,h2,h3,.title{
 	  font-weight: 800;
+  }
+
+  p{
+    font-weight: 300;
   }
 
   .sub-title{
