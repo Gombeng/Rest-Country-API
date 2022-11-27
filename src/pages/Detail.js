@@ -31,7 +31,7 @@ const Detail = () => {
 			<button onClick={() => navigate(-1)}>Back</button>
 
 			<div className="img-container">
-				<img src={country?.flags?.png} alt="flag" />
+				<img src={country?.flags?.png} alt={`${name} flag`} />
 			</div>
 
 			<div className="detail-contaiener">
