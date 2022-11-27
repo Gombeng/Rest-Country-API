@@ -6,7 +6,8 @@ import styled from 'styled-components';
 const Home = () => {
 	const apiUrlV2 = 'https://restcountries.com/v2/';
 	const [country, setCountry] = useState([]);
-
+	const [loading, setLoading] = useState(true);
+	// console.log(country);
 	useEffect(() => {
 		const getAllCountry = async () => {
 			await axios
@@ -14,6 +15,7 @@ const Home = () => {
 				.then((data) => {
 					// console.log(data.data);
 					setCountry(data.data);
+					setLoading(false);
 				})
 				.catch((err) => console.log(err));
 		};
@@ -28,44 +30,51 @@ const Home = () => {
 				<h2>Where in the world?</h2>
 				{/* <div className="theme-switch">Mode</div> */}
 			</div>
-			<div className="home">
-				<div className="toolbar">
-					<div className="search">
-						<input type="text" placeholder="Search for a country..." />
-					</div>
-					<div className="filter">
-						<select>
-							<option value="1">Filter by Religion</option>
-							<option value="1">Asia</option>
-							<option value="1">America</option>
-						</select>
-					</div>
-				</div>
 
-				<div className="card-container">
-					{country
-						?.slice(100, 150)
-						.map(({ name, area, flags, population, region = '-', capital }) => (
-							<Link key={area} to={`${name}`}>
-								<div className="card">
-									<img src={flags.png} alt={name} />
-									<div className="card-body">
-										<h3>{name}</h3>
-										<p>
-											Population: <span>{population}</span>
-										</p>
-										<p>
-											Region: <span>{region}</span>
-										</p>
-										<p>
-											Capital: <span>{capital}</span>
-										</p>
-									</div>
-								</div>
-							</Link>
-						))}
+			{loading ? (
+				<h3 className="loading">Loading...</h3>
+			) : (
+				<div className="home">
+					<div className="toolbar">
+						<div className="search">
+							<input type="text" placeholder="Search for a country..." />
+						</div>
+						<div className="filter">
+							<select>
+								<option value="1">Filter by Region</option>
+								<option value="1">Asia</option>
+								<option value="1">America</option>
+							</select>
+						</div>
+					</div>
+
+					<div className="card-container">
+						{country
+							?.slice(100, 120)
+							.map(
+								({ name, area, flags, population, region = '-', capital }) => (
+									<Link key={area} to={`${name}`}>
+										<div className="card">
+											<img src={flags.png} alt={name} />
+											<div className="card-body">
+												<h3>{name}</h3>
+												<p>
+													Population: <span>{population}</span>
+												</p>
+												<p>
+													Region: <span>{region}</span>
+												</p>
+												<p>
+													Capital: <span>{capital}</span>
+												</p>
+											</div>
+										</div>
+									</Link>
+								)
+							)}
+					</div>
 				</div>
-			</div>
+			)}
 
 			<div className="totop">T</div>
 		</Container>
@@ -79,6 +88,13 @@ const Container = styled.div`
 	font-size: 14px;
 	position: relative;
 	z-index: 10;
+
+	.loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 20vh;
+	}
 
 	.totop {
 		display: flex;
@@ -110,6 +126,7 @@ const Container = styled.div`
 		padding: 0 1rem;
 		margin-bottom: 1rem;
 		background-color: hsl(209, 23%, 22%);
+		box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
 		position: sticky;
 		top: 0;
 	}
@@ -125,7 +142,20 @@ const Container = styled.div`
 			padding: 0 1rem;
 			margin-bottom: 1rem;
 
+			@media screen and (max-width: 600px) {
+				flex-direction: column;
+				.search {
+					margin-bottom: 1rem;
+				}
+				.filter {
+					select {
+						width: 332px;
+					}
+				}
+			}
+
 			.search {
+				box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
 				input {
 					all: unset;
 					background-color: hsl(209, 23%, 22%);
@@ -136,15 +166,17 @@ const Container = styled.div`
 			}
 
 			.filter {
+				box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
 				select {
 					font-family: inherit;
 					outline: none;
 					border: none;
 					cursor: pointer;
 					background-color: hsl(209, 23%, 22%);
-					padding: 1rem 1.3rem;
+					padding: 0.8rem 1.3rem;
 					color: white;
 					border-radius: 0.3rem;
+					width: 300px;
 
 					option {
 						/* still doesn't know how to style option */
@@ -179,6 +211,7 @@ const Container = styled.div`
 				border-radius: 0.3rem;
 				overflow: hidden;
 				margin: 1rem auto;
+				box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
 
 				img {
 					width: 100%;
